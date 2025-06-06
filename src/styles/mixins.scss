@@ -1,0 +1,130 @@
+// BEM helpers
+@mixin element($element) {
+  &__#{$element} {
+    @content;
+  }
+}
+
+@mixin modifier($modifier) {
+  &--#{$modifier} {
+    @content;
+  }
+}
+
+// Glassmorphism effect
+@mixin glass($opacity: 0.05) {
+  background: rgba(255, 255, 255, $opacity);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+// Neon glow effect
+@mixin neon-glow($color: $primary, $size: 10px) {
+  box-shadow: 
+    0 0 5px $color,
+    0 0 10px $color,
+    0 0 15px $color,
+    0 0 20px $color;
+}
+
+// Glitch animation
+@mixin glitch-animation($name: 'glitch') {
+  @keyframes #{$name} {
+    0% { transform: translate(0); }
+    20% { transform: translate(-2px, 2px); }
+    40% { transform: translate(-2px, -2px); }
+    60% { transform: translate(2px, 2px); }
+    80% { transform: translate(2px, -2px); }
+    100% { transform: translate(0); }
+  }
+}
+
+// Code typing animation
+@mixin typing-animation($steps: 20, $duration: 2s) {
+  overflow: hidden;
+  white-space: nowrap;
+  animation: typing $duration steps($steps, end);
+  
+  @keyframes typing {
+    from { width: 0; }
+    to { width: 100%; }
+  }
+}
+
+// Floating animation
+@mixin float-animation($name: 'float', $distance: 10px, $duration: 3s) {
+  animation: #{$name} $duration ease-in-out infinite;
+  
+  @keyframes #{$name} {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-#{$distance}); }
+  }
+}
+
+// Responsive breakpoints
+@mixin mobile {
+  @media (max-width: 767px) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: 768px) and (max-width: 1023px) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: 1024px) {
+    @content;
+  }
+}
+
+// Scrollbar styling
+@mixin custom-scrollbar($track-color: transparent, $thumb-color: rgba(255, 255, 255, 0.3)) {
+  ::-webkit-scrollbar {
+    width: 8px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background: $track-color;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background: $thumb-color;
+    border-radius: 4px;
+    
+    &:hover {
+      background: rgba(255, 255, 255, 0.5);
+    }
+  }
+}
+
+// Text gradient
+@mixin text-gradient($gradient) {
+  background: $gradient;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+// Grid system
+@mixin grid($columns: 12, $gap: $spacing-md) {
+  display: grid;
+  grid-template-columns: repeat($columns, 1fr);
+  gap: $gap;
+}
+
+// Flexbox utilities
+@mixin flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}

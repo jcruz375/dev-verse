@@ -1,0 +1,201 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+// Base styles
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  font-size: 16px;
+  line-height: 1.6;
+}
+
+body {
+  font-family: $font-family-mono;
+  background: $space-deep;
+  color: $vscode-text;
+  overflow-x: hidden;
+  cursor: none; // Custom cursor will be implemented
+}
+
+// Custom scrollbar
+@include custom-scrollbar();
+
+// Text selection
+::selection {
+  background: rgba($primary, 0.3);
+  color: white;
+}
+
+// Base typography
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-family-mono;
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+h1 { font-size: 2.5rem; }
+h2 { font-size: 2rem; }
+h3 { font-size: 1.5rem; }
+h4 { font-size: 1.25rem; }
+h5 { font-size: 1.125rem; }
+h6 { font-size: 1rem; }
+
+p {
+  margin-bottom: $spacing-md;
+}
+
+a {
+  color: $primary;
+  text-decoration: none;
+  transition: color $animation-fast ease;
+  
+  &:hover {
+    color: lighten($primary, 10%);
+  }
+}
+
+// Utility classes
+.text-gradient {
+  @include text-gradient(linear-gradient(45deg, $primary, $secondary));
+}
+
+.glass {
+  @include glass();
+}
+
+.neon-glow {
+  @include neon-glow();
+}
+
+.float {
+  @include float-animation();
+}
+
+// Layout utilities
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 $spacing-lg;
+  
+  @include mobile {
+    padding: 0 $spacing-md;
+  }
+}
+
+.section {
+  min-height: 100vh;
+  padding: $spacing-xxl 0;
+  position: relative;
+}
+
+// Animation classes
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity $animation-normal ease;
+}
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.slide-up-enter-active,
+.slide-up-leave-active {
+  transition: all $animation-normal ease;
+}
+
+.slide-up-enter-from {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.slide-up-leave-to {
+  opacity: 0;
+  transform: translateY(-30px);
+}
+
+// Glitch effect
+@include glitch-animation();
+
+.glitch {
+  animation: glitch 0.5s ease-in-out;
+}
+
+// VS Code themed components
+.vscode-window {
+  background: $vscode-bg;
+  border: 1px solid $vscode-border;
+  border-radius: $border-radius-md;
+  box-shadow: $shadow-xl;
+  
+  @include element('header') {
+    background: $vscode-sidebar;
+    padding: $spacing-sm $spacing-md;
+    border-bottom: 1px solid $vscode-border;
+    @include flex-between;
+    
+    @include element('title') {
+      color: $vscode-text;
+      font-size: 0.875rem;
+      font-weight: 500;
+    }
+    
+    @include element('controls') {
+      display: flex;
+      gap: $spacing-xs;
+      
+      span {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        
+        &.close { background: #ff5f57; }
+        &.minimize { background: #ffbd2e; }
+        &.maximize { background: #28ca42; }
+      }
+    }
+  }
+  
+  @include element('content') {
+    padding: $spacing-lg;
+  }
+}
+
+// Terminal styles
+.terminal {
+  background: #0c0c0c;
+  color: #00ff00;
+  font-family: $font-family-mono;
+  padding: $spacing-lg;
+  border-radius: $border-radius-md;
+  
+  @include element('prompt') {
+    @include flex-between;
+    margin-bottom: $spacing-md;
+    
+    &::before {
+      content: '$ ';
+      color: $primary;
+    }
+  }
+  
+  @include element('output') {
+    white-space: pre-wrap;
+    @include typing-animation();
+  }
+}
+
+// Code syntax highlighting
+.code {
+  font-family: $font-family-mono;
+  
+  &.keyword { color: $vscode-keyword; }
+  &.string { color: $vscode-string; }
+  &.comment { color: $vscode-comment; }
+  &.function { color: $vscode-function; }
+  &.variable { color: $vscode-text; }
+}

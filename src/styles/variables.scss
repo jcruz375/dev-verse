@@ -1,0 +1,68 @@
+// Color System
+$primary: #64ffda;
+$secondary: #ff6b6b;
+$accent: #4ecdc4;
+$success: #4caf50;
+$warning: #ff9800;
+$error: #f44336;
+
+// VS Code inspired colors
+$vscode-bg: #1e1e1e;
+$vscode-sidebar: #252526;
+$vscode-editor: #1e1e1e;
+$vscode-panel: #2d2d30;
+$vscode-border: #3e3e42;
+$vscode-text: #cccccc;
+$vscode-comment: #6a9955;
+$vscode-keyword: #569cd6;
+$vscode-string: #ce9178;
+$vscode-function: #dcdcaa;
+
+// Space theme colors
+$space-deep: #0f0f23;
+$space-mid: #16213e;
+$space-light: #1a1a2e;
+$space-accent: #64ffda;
+$space-secondary: #ff6b35;
+
+// Typography
+$font-family-mono: 'Fira Code', 'Consolas', 'Monaco', monospace;
+$font-family-sans: 'Inter', 'Roboto', sans-serif;
+
+// Spacing system (8px base)
+$spacing-xs: 4px;
+$spacing-sm: 8px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+$spacing-xl: 32px;
+$spacing-xxl: 48px;
+
+// Z-index system
+$z-cursor: 9999;
+$z-modal: 1000;
+$z-overlay: 500;
+$z-fixed: 100;
+$z-default: 1;
+
+// Animation durations
+$animation-fast: 0.15s;
+$animation-normal: 0.3s;
+$animation-slow: 0.5s;
+$animation-slower: 0.8s;
+
+// Border radius
+$border-radius-sm: 4px;
+$border-radius-md: 8px;
+$border-radius-lg: 12px;
+$border-radius-xl: 16px;
+
+// Shadows
+$shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+$shadow-md: 0 4px 8px rgba(0, 0, 0, 0.2);
+$shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.3);
+$shadow-xl: 0 16px 32px rgba(0, 0, 0, 0.4);
+
+// Glassmorphism
+$glass-bg: rgba(255, 255, 255, 0.05);
+$glass-border: rgba(255, 255, 255, 0.1);
+$glass-blur: blur(10px);
