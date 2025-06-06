@@ -1,17 +1,24 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, nextTick } from 'vue' // ⬅️ Faltava o nextTick aqui
 import { useThreeJS } from '@/composables/useThreeJS'
 import { professionalData } from '@/data/professional-data'
 
 const containerRef = ref<HTMLElement>()
 const { createSkillsVisualization } = useThreeJS(containerRef)
 
-onMounted(() => {
-  setTimeout(() => {
+onMounted(async () => {
+  await nextTick()
+  if (containerRef.value) {
     createSkillsVisualization(professionalData.skills)
-  }, 500)
+  } else {
+    console.warn('containerRef not ready')
+  }
+
+  console.log('skills recebidas:', professionalData.skills)
+
 })
 </script>
+
 
 <template>
   <div 
