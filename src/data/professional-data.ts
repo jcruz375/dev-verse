@@ -54,13 +54,6 @@ export const professionalData: ProfessionalData = {
       color: "#336791",
       icon: "fas fa-database"
     },
-    { 
-      name: "DevOps", 
-      orbitRadius: 180, 
-      satellites: ["GitHub Actions", "Jenkins", "Amazon S3", "CloudFront"],
-      color: "#ff6b35",
-      icon: "fas fa-cloud"
-    }
   ],
 
   timeline: [
@@ -80,16 +73,16 @@ export const professionalData: ProfessionalData = {
     },
     { 
       version: "v3.5.0", 
-      year: 2023, 
-      label: "Migração Vue 2 → 3", 
-      highlights: ["Refatoração de base legada", "Melhoria de performance"],
+      year: 2024, 
+      label: "ENC Interativa – Frontend", 
+      highlights: ["30+ plataformas para Unilever/Mondelez", "Testes com Jest e Cypress", "RxJS + NgRx"],
       type: "career"
     },
     { 
       version: "v4.0.0", 
       year: 2024, 
-      label: "ENC Interativa – Frontend Sênior", 
-      highlights: ["30+ plataformas para Unilever/Mondelez", "Testes com Jest e Cypress", "RxJS + NgRx"],
+      label: "Migração Vue 2 → 3", 
+      highlights: ["Refatoração de base legada", "Melhoria de performance"],
       type: "career"
     },
     { 
@@ -104,8 +97,6 @@ export const professionalData: ProfessionalData = {
   achievements: [
     "Entrega de 30+ plataformas interativas (Unilever, BMG, Mondelez)",
     "Migração de Vue 2 para Vue 3 sem downtime",
-    "Automação com GitHub Actions e Jenkins CI/CD",
-    "Aumento de cobertura de testes com Jest/Cypress",
     "Criação de sistema de e-commerce em Next.js + Node.js",
     "Início de sistema mobile com Flutter (ERP Pocket)"
   ],
