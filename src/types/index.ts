@@ -22,6 +22,7 @@ export interface Skill {
   satellites: string[]
   color?: string
   icon?: string
+  level?: number // Adicione esta linha
 }
 
 export interface TimelineEvent {

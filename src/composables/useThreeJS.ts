@@ -1,153 +1,145 @@
-// useThreeJS.ts
-import * as THREE from 'three'
-import { OrbitControls } from 'three-stdlib'
-import { onUnmounted, Ref } from 'vue'
-import type { Skill } from '../types/index'
+// src/composables/useThreeJS.ts
+import * as THREE from 'three';
+import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { Ref } from 'vue';
 
-const orbitingPlanets: {
-  mesh: THREE.Mesh
-  angle: number
-  radius: number
-}[] = []
+interface Skill {
+  name: string;
+  level: number;
+  color: string;
+  satellites: string[];
+}
 
+export const useThreeJS = (containerRef: Ref<HTMLElement | undefined>) => {
+  let scene: THREE.Scene;
+  let camera: THREE.PerspectiveCamera;
+  let renderer: THREE.WebGLRenderer;
+  let raycaster: THREE.Raycaster;
+  let mouse: THREE.Vector2;
+  let animationId: number;
+  
+  const createSkillsVisualization = (skills: Skill[]) => {
+    if (!containerRef.value) return;
 
-export function useThreeJS(containerRef: Ref<HTMLElement | null>) {
-  const scene = new THREE.Scene()
-  const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
-  const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
+    // Inicializar cena, câmera e renderizador
+    scene = new THREE.Scene();
+    camera = new THREE.PerspectiveCamera(
+      75,
+      containerRef.value.clientWidth / containerRef.value.clientHeight,
+      0.1,
+      1000
+    );
+    camera.position.z = 5;
 
-  let controls: OrbitControls
-  let animationFrameId: number
+    renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setSize(containerRef.value.clientWidth, containerRef.value.clientHeight);
+    containerRef.value.appendChild(renderer.domElement);
 
-  const init = () => {
-    if (!containerRef.value) return
+    // Adicionar controles de órbita
+    const controls = new OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
 
-    // Garante que o canvas anterior foi removido (evita duplicação ao trocar de rota)
-    if (containerRef.value.contains(renderer.domElement)) {
-      containerRef.value.removeChild(renderer.domElement)
+    // Configurar luzes
+    const ambientLight = new THREE.AmbientLight(0x404040);
+    scene.add(ambientLight);
+
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+    directionalLight.position.set(1, 1, 1);
+    scene.add(directionalLight);
+
+    // Criar esferas para cada skill
+    skills.forEach(skill => {
+      createSkillSphere(skill);
+    });
+
+    // Configurar raycasting para hover
+    raycaster = new THREE.Raycaster();
+    mouse = new THREE.Vector2();
+
+    // Event listener para hover
+    renderer.domElement.addEventListener('mousemove', onMouseMove);
+
+    // Iniciar animação
+    animate();
+  };
+
+  const createSkillSphere = (skill: Skill) => {
+    const geometry = new THREE.SphereGeometry(0.5, 32, 32);
+    const material = new THREE.MeshPhongMaterial({ 
+      color: new THREE.Color(skill.color),
+      shininess: 100,
+    });
+    
+    const sphere = new THREE.Mesh(geometry, material);
+    
+    // Posicionamento aleatório na órbita
+    sphere.position.set(
+      (Math.random() - 0.5) * 10,
+      (Math.random() - 0.5) * 10,
+      (Math.random() - 0.5) * 10
+    );
+
+    // Armazenar dados da skill para hover
+    sphere.userData = { 
+      isSphere: true,
+      title: skill.name 
+    };
+
+    scene.add(sphere);
+    return sphere;
+  };
+
+  const onMouseMove = (event: MouseEvent) => {
+    if (!containerRef.value) return;
+
+    // Calcular posição do mouse normalizada
+    const rect = containerRef.value.getBoundingClientRect();
+    mouse.x = ((event.clientX - rect.left) / rect.width) * 2 - 1;
+    mouse.y = -((event.clientY - rect.top) / rect.height) * 2 + 1;
+
+    // Atualizar tooltip via DOM
+    const tooltip = document.getElementById('skill-tooltip');
+    if (!tooltip) return;
+
+    raycaster.setFromCamera(mouse, camera);
+    const intersects = raycaster.intersectObjects(scene.children);
+    
+    tooltip.style.display = 'none';
+
+    if (intersects.length > 0 && intersects[0].object.userData.title) {
+      const sphere = intersects[0].object;
+      tooltip.textContent = sphere.userData.title;
+      tooltip.style.display = 'block';
+      tooltip.style.left = `${event.clientX + 15}px`;
+      tooltip.style.top = `${event.clientY}px`;
     }
-
-    // Renderizador
-    renderer.setSize(containerRef.value.clientWidth, containerRef.value.clientHeight)
-    renderer.setPixelRatio(window.devicePixelRatio)
-    containerRef.value.appendChild(renderer.domElement)
-
-    // Câmera
-    camera.position.set(0, 0, 20)
-    camera.lookAt(0, 0, 0)
-
-    // OrbitControls
-    controls = new OrbitControls(camera, renderer.domElement)
-    controls.enableDamping = true
-    controls.dampingFactor = 0.05
-
-    // Evento resize
-    window.addEventListener('resize', handleResize)
-  }
-
-  const handleResize = () => {
-    if (!containerRef.value) return
-
-    camera.aspect = containerRef.value.clientWidth / containerRef.value.clientHeight
-    camera.updateProjectionMatrix()
-    renderer.setSize(containerRef.value.clientWidth, containerRef.value.clientHeight)
-  }
+  };
 
   const animate = () => {
-    animationFrameId = requestAnimationFrame(animate)
-    controls.update()
-    renderer.render(scene, camera)
+    animationId = requestAnimationFrame(animate);
 
-    console.log('Animando frame...')
+    // Animar todas as esferas
+    scene.traverse((object) => {
+      if (object instanceof THREE.Mesh && object.userData.isSphere) {
+        object.rotation.x += 0.01;
+        object.rotation.y += 0.01;
+      }
+    });
 
-  }
+    renderer.render(scene, camera);
+  };
 
-  const createSkillsVisualization = (skills: Skill[]) => {
-    orbitingPlanets.length = 0
-    init()
-
-    // Limpa cena
-    while (scene.children.length > 0) {
-      scene.remove(scene.children[0])
+  // Limpeza ao desmontar o componente
+  const cleanup = () => {
+    if (animationId) cancelAnimationFrame(animationId);
+    if (renderer) {
+      renderer.domElement.removeEventListener('mousemove', onMouseMove);
+      renderer.dispose();
     }
-
-    // Luzes
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6)
-    scene.add(ambientLight)
-
-    const pointLight = new THREE.PointLight(0xffffff, 1)
-    pointLight.position.set(10, 10, 20)
-    scene.add(pointLight)
-
-    // Núcleo central (opcional)
-    const coreGeometry = new THREE.SphereGeometry(0.5, 32, 32)
-    const coreMaterial = new THREE.MeshStandardMaterial({ color: new THREE.Color('#f7df1e') })
-    const core = new THREE.Mesh(coreGeometry, coreMaterial)
-    scene.add(core)
-
-    // Planetas
-    // skills.forEach((skill, index) => {
-    //   const geometry = new THREE.SphereGeometry(1, 32, 32)
-    //   const material = new THREE.MeshStandardMaterial({
-    //     color: new THREE.Color(skill.color),
-    //     roughness: 0.3,
-    //     metalness: 0.1
-    //   })
-
-    //   const sphere = new THREE.Mesh(geometry, material)
-    //   const angle = (index / skills.length) * Math.PI * 2
-    //   const radius = 5 + index * 2
-
-
-    //   orbitingPlanets.push({ mesh: sphere, angle, radius })
-    //   scene.add(sphere)
-    // })
-
-    skills.forEach((skill, index) => {
-      const geometry = new THREE.SphereGeometry(1, 32, 32)
-      const material = new THREE.MeshStandardMaterial({
-        color: new THREE.Color(skill.color),
-        roughness: 0.3,
-        metalness: 0.1
-      })
-
-      const sphere = new THREE.Mesh(geometry, material)
-
-      // Distribui uniformemente com ângulo + espaçamento de raio
-      const angle = (index / skills.length) * Math.PI * 2
-      const radius = 6 + index * 2 // 🔧 espaçamento fixo incremental
-
-      // Posição inicial
-      sphere.position.set(
-        Math.cos(angle) * radius,
-        Math.sin(angle) * radius,
-        0
-      )
-
-      orbitingPlanets.push({ mesh: sphere, angle, radius })
-      scene.add(sphere)
-
-      // 🐞 DEBUG opcional:
-      console.log(`✅ Adicionado: ${skill.name} @ radius: ${radius}`)
-    })
-
-
-    // CHAMAR A ANIMAÇÃO AGORA:
-    animate()
-  }
-
-
-  onUnmounted(() => {
-    window.removeEventListener('resize', handleResize)
-    cancelAnimationFrame(animationFrameId)
-    if (containerRef.value && renderer.domElement) {
-      containerRef.value.removeChild(renderer.domElement)
-    }
-    controls?.dispose()
-    renderer.dispose()
-  })
+  };
 
   return {
-    createSkillsVisualization
-  }
-}
+    createSkillsVisualization,
+    cleanup
+  };
+};

@@ -2,17 +2,17 @@
 import { onMounted } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { useKeyboardShortcuts } from '@/composables/useKeyboardShortcuts'
+import { useKeyboardShortcuts } from '../composables/useKeyboardShortcuts'
 
 // Components
-import CustomCursor from '@/components/CustomCursor.vue'
-import TerminalHeader from '@/components/TerminalHeader.vue'
-import SkillsOrbit from '@/components/SkillsOrbit.vue'
-import TimelineVisualization from '@/components/TimelineVisualization.vue'
-import CommandPalette from '@/components/CommandPalette.vue'
+import CustomCursor from '../components/CustomCursor.vue'
+import TerminalHeader from '../components/TerminalHeader.vue'
+import SkillsOrbit from '../components/SkillsOrbit.vue'
+import TimelineVisualization from '../components/TimelineVisualization.vue'
+import CommandPalette from '../components/CommandPalette.vue'
 
 // Data
-import { professionalData } from '@/data/professional-data'
+import { professionalData } from '../data/professional-data'
 
 // Composables
 useKeyboardShortcuts()
@@ -22,20 +22,6 @@ gsap.registerPlugin(ScrollTrigger)
 onMounted(() => {
   // Smooth scroll setup
   gsap.registerPlugin(ScrollTrigger)
-  
-  // Parallax effects
-  gsap.utils.toArray('.parallax').forEach((element: any) => {
-    gsap.to(element, {
-      yPercent: -50,
-      ease: "none",
-      scrollTrigger: {
-        trigger: element,
-        start: "top bottom",
-        end: "bottom top",
-        scrub: true
-      }
-    })
-  })
   
   // Section transitions
   gsap.utils.toArray('.section').forEach((section: any) => {
@@ -113,7 +99,7 @@ onMounted(() => {
     </section>
 
     <!-- Skills Section -->
-    <section class="section skills parallax">
+    <section class="section skills">
       <div class="container">
         <SkillsOrbit />
       </div>

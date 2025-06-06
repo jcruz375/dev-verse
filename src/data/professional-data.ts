@@ -1,4 +1,4 @@
-import type { ProfessionalData } from '@/types'
+import type { ProfessionalData } from '../types/index'
 
 export const professionalData: ProfessionalData = {
   currentVersion: "v4.2.0",
