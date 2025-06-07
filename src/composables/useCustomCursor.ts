@@ -5,7 +5,7 @@ export function useCustomCursor() {
   const cursorRef = ref<HTMLElement>()
   const cursorDotRef = ref<HTMLElement>()
   const isHoveringTech = ref(false)
-  const particles = ref<HTMLElement[]>([])
+  // const particles = ref<HTMLElement[]>([])
 
   let mouseX = 0
   let mouseY = 0

@@ -2,12 +2,12 @@
 import { ref, onMounted } from 'vue'
 import { gsap } from 'gsap'
 import { ScrollTrigger } from 'gsap/ScrollTrigger'
-import { professionalData } from '@/data/professional-data'
+import { professionalData } from '../data/professional-data'
 
 gsap.registerPlugin(ScrollTrigger)
 
 const timelineRef = ref<HTMLElement>()
-const isEducationMode = ref(false)
+// const isEducationMode = ref(false)
 
 const animateTimeline = () => {
   if (!timelineRef.value) return

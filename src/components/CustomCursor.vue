@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useCustomCursor } from '@/composables/useCustomCursor'
+import { useCustomCursor } from '../composables/useCustomCursor'
 
 const { cursorRef, cursorDotRef, isHoveringTech } = useCustomCursor()
 </script>

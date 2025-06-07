@@ -15,7 +15,7 @@ import 'quasar/src/css/index.sass'
 import '@/styles/main.scss'
 
 import App from './App.vue'
-import Home from '@/views/Home.vue'
+import Home from './views/Home.vue'
 
 const routes = [
   { path: '/', component: Home }

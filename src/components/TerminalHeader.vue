@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
-import { professionalData } from '@/data/professional-data'
+import { professionalData } from '../data/professional-data'
+import type { Skill } from '../types/index'
 
 const currentTime = ref(new Date())
 const terminalCommand = ref('')
@@ -33,7 +34,7 @@ Location: ${professionalData.identity.location}
 Role: Frontend Developer | ${professionalData.currentVersion}
 Tags: ${professionalData.identity.tags.join(', ')}`,
 
-  skills: () => professionalData.skills.map(skill => 
+  skills: () => professionalData.skills.map((skill: Skill) => 
     `${skill.name}: ${skill.satellites.join(', ')}`
   ).join('\n'),
 

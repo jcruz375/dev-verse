@@ -75,9 +75,9 @@ const selectProject = (project: typeof projects[0]) => {
   closePalette()
 }
 
-const handleGlobalKeydown = (e: KeyboardEvent) => {
-  // This will be triggered by the custom event from useKeyboardShortcuts
-}
+// const handleGlobalKeydown = (e: KeyboardEvent) => {
+//   // This will be triggered by the custom event from useKeyboardShortcuts
+// }
 
 onMounted(() => {
   document.addEventListener('keydown', handleKeyDown)

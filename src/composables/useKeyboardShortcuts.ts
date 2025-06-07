@@ -1,9 +1,9 @@
 import { onMounted, onUnmounted } from 'vue'
-import { useRouter } from 'vue-router'
+// import { useRouter } from 'vue-router'
 import { Notify } from 'quasar'
 
 export function useKeyboardShortcuts() {
-  const router = useRouter()
+  // const router = useRouter()
 
   const shortcuts = {
     'ctrl+d': () => {
